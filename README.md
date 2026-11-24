@@ -5,6 +5,12 @@ products through their APIs. With the `connection-api` skill, you describe what 
 plain words, for example "open my project, calculate all connections and list the failing
 checks", and Claude writes and runs the script for you.
 
+https://github.com/user-attachments/assets/e180277a-87bf-4cdf-b79b-380e3e823158
+
+*Claude writes and runs the script; IDEA StatiCa builds the model, calculates it and reports
+the checks, and a recalculation in the desktop application gives the same numbers. The video
+is sped up; it was recorded with IDEA StatiCa 26.1.*
+
 | Skill | Call it as | What it does | Written for |
 |---|---|---|---|
 | `connection-api` | `/ideastatica:connection-api` | Scripts (Python, C#, any language) that open, build, change, calculate and report on IDEA StatiCa Connection projects (`.ideaCon`) | IDEA StatiCa 26.1 |

@@ -16,7 +16,8 @@ all read `main`.
    `displayName`. If a rename is unavoidable, add a `renames` entry to `marketplace.json`.
 4. **Bump the version on every release.** Claude Code and claude.ai deliver a new copy only
    when the `version` in `plugin.json` changes. `scripts/check_repo.py --base` fails a pull
-   request that changes a plugin without raising its version.
+   request that changes a plugin without raising its version once that version is released
+   (its `<plugin>--v<version>` tag exists); until then, changes may stay on it.
 5. **Set `version` only in `plugin.json`**, never in the marketplace entry.
 
 ## Versioning

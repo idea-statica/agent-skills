@@ -1,19 +1,18 @@
 ---
 name: connection-api
 description: >-
-  Use when writing or debugging code that drives the IDEA StatiCa Connection REST API
-  (IdeaStatiCa.ConnectionRestApi.exe, "Connection Rest API 5.0")
-  — automating steel connection design and CBFEM calculation over HTTP. Covers the ClientId
-  handshake, the open/load/calculate/results/download workflow, asynchronous calculation jobs
-  (calculate-async / calculation-jobs polling and cancel), a loadEffectIds subset
-  selector, design parameters and linking them to model properties,
-  cross-section geometry as line/arc segment chains, material-library name discovery, the
-  design code and its steel code edition (AISC LRFD/ASD, EN 1993-1-8 2005/2024, CSA S16), and
-  modeling semantics. Also documents the typed operations CRUD (weld, cut, plate-cut,
-  bolt-grid, anchor-grid, pin-grid, contact, contact-grid, negative-member, negative-plate,
-  stiffening-member, stiffening-plate, work-plane). Triggers on
-  mentions of the Connection REST API over HTTP, typed operations endpoints, connect-client,
-  or /api/5/projects.
+  Use when the user wants a script or agent that works with IDEA StatiCa Connection projects
+  (.ideaCon) through the Connection REST API (IdeaStatiCa.ConnectionRestApi.exe, "Connection
+  Rest API 5.0"), in Python, C# or any language: open or create a project, add members,
+  plates, welds, bolts, anchors and cuts, set load effects and design parameters, run the
+  CBFEM calculation, read check results, save PDF reports or the .ideaCon file. Covers the
+  ClientId handshake, asynchronous calculation jobs (calculate-async / calculation-jobs
+  polling and cancel), cross-section geometry, material names, the design
+  code and its steel code edition (AISC LRFD/ASD, EN 1993-1-8 2005/2024, CSA S16), the typed
+  operations CRUD (weld, cut, plate-cut, bolt-grid, anchor-grid, pin-grid, contact,
+  contact-grid, negative-member, negative-plate, stiffening-member, stiffening-plate,
+  work-plane), and a service that does not answer. Triggers on IDEA StatiCa Connection,
+  .ideaCon, connection design or check automation, connect-client, or /api/5.
 ---
 
 # IDEA StatiCa Connection REST API (condensed)
@@ -54,6 +53,14 @@ description: >-
 Local HTTP service automating steel-connection design + CBFEM calculation (same engine
 as the desktop Connection app). Provides the stable API plus **typed per-kind operations
 CRUD** (13 kinds).
+
+> **IDEA StatiCa calculates; you orchestrate.** Every check result, utilization and verdict
+> you report comes from the service's responses: present it as IDEA StatiCa's result
+> ("IDEA StatiCa reports …"). Never compute, estimate or extrapolate a check, a resistance or a
+> utilization yourself, and never call a connection safe or failing from your own reasoning.
+> A result that is missing or `Not calculated` is reported as such, not filled in. A change
+> you suggest (a thicker plate, more bolts) is a proposal until IDEA StatiCa has recalculated
+> it.
 
 ## Service version
 
@@ -99,6 +106,9 @@ older service than the one above, check these rows against it before relying on 
 - Base URL `http://localhost:5000`, route prefix `/api/5`. Swagger UI `/index.html`,
   spec `/swagger/5.0/swagger.json` — **the running service's swagger is the source of
   truth**; never invent endpoints, fields, or enum values.
+- The user may run the service on another port (`-port=NNNN`): use the address they give. If
+  nothing answers, the service is not running — ask the user to start it, do not scan ports
+  or guess (`diagnostics.md` § Nothing answers at the base URL).
 - Stateful and per-client: a project lives in service memory until `close`/disconnect.
 - **Multi-project, with per-client project lists**: one ClientId can hold several open
   projects (`GET /api/5/projects` lists its own), and a second ClientId sees `[]` plus **404**

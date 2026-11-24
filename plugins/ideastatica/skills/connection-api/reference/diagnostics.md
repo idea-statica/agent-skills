@@ -87,6 +87,22 @@ mid-surface (thickness is centred on it).
 
 ## Symptom → cause → confirm
 
+### Nothing answers at the base URL (connection refused, timeout)
+- **Cause** → the service is not running, or it runs on another port.
+- **Confirm** → `GET /heartbeat` (no `ClientId` needed) answers 200 `API is alive`; the root
+  `/` redirects to the Swagger UI `/index.html`.
+- **Fix** → the user starts `IdeaStatiCa.ConnectionRestApi.exe` from the IDEA StatiCa
+  installation folder, by default `C:\Program Files\IDEA StatiCa\StatiCa <major version>`
+  (for example `StatiCa 26.1`). The folder can be chosen in the installer, and several
+  versions can be installed side by side: use the one the user names. `-port=NNNN` selects
+  another port; the default is 5000. While running, the service holds a license seat, so
+  start it yourself only when the user agrees.
+- **It exits at start with "This API is disabled for Basic license type"** → the API needs a
+  Steel, Complete or Enterprise license (Trial and Educational licenses also work). Nothing
+  in the request can fix it; tell the user.
+- Do not scan ports or guess an address. Ask the user where the service runs, then
+  `GET /api/5/clients/idea-service-version` to learn its build.
+
 ### Everything built and calculated, but a CHECK ROW says `Not calculated`
 
 The hardest class to catch, because every signal you would normally trust is green: the

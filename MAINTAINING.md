@@ -71,6 +71,10 @@ the LF line endings the repository uses.
 count, the license, the changelog entry, file names, sizes and line endings, and with `--base`
 the version bump. `claude plugin validate` checks what Claude Code itself loads.
 
+`python scripts/install_smoke_test.py` (the `install` job in CI) goes one step further: it adds
+this repository as a marketplace in a temporary Claude Code config, installs each plugin and
+checks that `claude plugin details` lists every skill folder.
+
 To try a plugin in Claude Code before merging, add your working copy as a marketplace:
 
 ```

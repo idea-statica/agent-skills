@@ -187,7 +187,8 @@ handled under the terms of your Claude plan.
 ## Support
 
 Report problems with the skills and suggestions as
-[GitHub issues](https://github.com/idea-statica/agent-skills/issues). Maintainers: see
+[GitHub issues](https://github.com/idea-statica/agent-skills/issues). Report security
+vulnerabilities privately instead, as [SECURITY.md](SECURITY.md) describes. Maintainers: see
 [MAINTAINING.md](MAINTAINING.md).
 
 ## License

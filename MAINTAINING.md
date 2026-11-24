@@ -130,5 +130,6 @@ commit and publishes it according to the plugin's publish setting.
 
 ## Repository settings (one-time)
 
-- Branch protection on `main`: require a pull request and the `validate` check.
+- Ruleset on `main`: require a pull request and the `validate` and `install` checks. GitHub
+  enforces rulesets on a private repository only on a paid plan.
 - Allow GitHub Actions to create releases (the `release` workflow uses `contents: write`).

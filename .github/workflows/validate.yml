@@ -46,8 +46,8 @@ jobs:
             claude plugin validate --strict "$dir"
           done
 
-  # Installs each plugin from this marketplace and checks that its skills load. A separate job,
-  # so it does not block merging until it has proven reliable; then make it a required check.
+  # Installs each plugin from this marketplace and checks that its skills load. A separate job
+  # from validate, so a failure shows which of the two broke; both are required checks on main.
   install:
     runs-on: ubuntu-latest
     steps:

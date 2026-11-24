@@ -45,3 +45,26 @@ jobs:
           for dir in plugins/*/; do
             claude plugin validate --strict "$dir"
           done
+
+  # Installs each plugin from this marketplace and checks that its skills load. A separate job,
+  # so it does not block merging until it has proven reliable; then make it a required check.
+  install:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v6
+
+      - uses: actions/setup-python@v6
+        with:
+          python-version: "3.12"
+
+      - uses: actions/setup-node@v6
+        with:
+          node-version: "22"
+
+      - name: Install Claude Code
+        run: npm install -g @anthropic-ai/claude-code@latest
+
+      - name: Install each plugin and check its skills
+        run: |
+          claude --version
+          python scripts/install_smoke_test.py

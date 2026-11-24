@@ -9,6 +9,16 @@ checks", and Claude writes and runs the script for you.
 |---|---|---|---|
 | `connection-api` | `/ideastatica:connection-api` | Scripts (Python, C#, any language) that open, build, change, calculate and report on IDEA StatiCa Connection projects (`.ideaCon`) | IDEA StatiCa 26.1 |
 
+## IDEA StatiCa calculates, Claude orchestrates
+
+Claude writes and runs the script that calls the API. Every change to the model, every
+calculation and every check result comes from IDEA StatiCa itself: the API runs the same CBFEM
+solver as the IDEA StatiCa Connection desktop application, whose
+[verification and validation](https://www.ideastatica.com/support-center/cbfem-how-it-works-code-compliance-validation-and-verification)
+has been carried out together with universities. Claude does not calculate or check the
+connection; it passes on what IDEA StatiCa reports, and every project it saves opens in the
+desktop application.
+
 **The names in one sentence:** you add this repository, `idea-statica/agent-skills`, as a
 plugin marketplace, which Claude then calls `ideastatica-skills`; the plugin in it is
 `ideastatica` (shown as *IDEA StatiCa*), and it holds the skills. Skills for further IDEA

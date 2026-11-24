@@ -11,6 +11,12 @@ in Claude Code, runs it. You can also call a skill by name.
 Skills for further IDEA StatiCa APIs arrive with plugin updates; you do not install anything
 again.
 
+The agent only orchestrates. Every calculation and every check result comes from IDEA StatiCa
+itself, from the same CBFEM solver as the desktop application, whose
+[verification and validation](https://www.ideastatica.com/support-center/cbfem-how-it-works-code-compliance-validation-and-verification)
+has been carried out together with universities. The agent passes on what IDEA StatiCa reports;
+it does not calculate or check the connection itself.
+
 ## Before you start
 
 - **Windows with IDEA StatiCa 26.1** and a Steel, Complete or Enterprise license (Trial and

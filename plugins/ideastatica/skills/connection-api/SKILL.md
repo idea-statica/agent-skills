@@ -108,7 +108,9 @@ older service than the one above, check these rows against it before relying on 
   truth**; never invent endpoints, fields, or enum values.
 - The user may run the service on another port (`-port=NNNN`): use the address they give. If
   nothing answers, the service is not running — ask the user to start it, do not scan ports
-  or guess (`diagnostics.md` § Nothing answers at the base URL).
+  or guess (`diagnostics.md` § Nothing answers at the base URL). Never restart or stop a
+  service the user started. A service holds a license seat while it runs, so if you started
+  it yourself, which you do only with the user's consent, stop it when the work is done.
 - Stateful and per-client: a project lives in service memory until `close`/disconnect.
 - **Multi-project, with per-client project lists**: one ClientId can hold several open
   projects (`GET /api/5/projects` lists its own), and a second ClientId sees `[]` plus **404**

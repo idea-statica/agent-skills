@@ -19,8 +19,9 @@ it does not calculate or check the connection itself.
 
 ## Before you start
 
-- **Windows with IDEA StatiCa 26.1** and a Steel, Complete or Enterprise license (Trial and
-  Educational licenses also work, but not for commercial use).
+- **Windows with IDEA StatiCa 26.1** and a license that includes the API: for `connection-api`,
+  Steel, Complete or Enterprise (Trial and Educational licenses also work, but not for
+  commercial use).
 - **The Connection REST API service running**: start `IdeaStatiCa.ConnectionRestApi.exe` from
   the installation folder, by default `C:\Program Files\IDEA StatiCa\StatiCa <version>`, and
   check that <http://localhost:5000> shows its API description.

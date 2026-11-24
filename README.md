@@ -29,8 +29,10 @@ StatiCa APIs will arrive in the same plugin with its updates.
 - **Windows with IDEA StatiCa 26.1** installed. The skill is written for 26.1. On another
   version it makes Claude read the service's version and the service's own API description
   before relying on version-specific details.
-- **A license**: IDEA StatiCa Steel, Complete or Enterprise. Trial and Educational licenses
-  also work, but their terms do not allow commercial use. Basic licenses cannot use the API.
+- **A license that includes the API you automate.** For example, the Connection API needs a
+  Steel, Complete or Enterprise license, and the concrete APIs will need a license that
+  includes Concrete. Trial and Educational licenses also work, but their terms do not allow
+  commercial use. Basic licenses cannot use the APIs.
 - **Claude Code** ([install](https://code.claude.com/docs/en/setup)) in the terminal, VS Code,
   JetBrains or the Code tab of Claude Desktop. It runs scripts on your computer, where the
   service runs. In a chat on claude.ai or in the Claude apps, Claude can write the scripts but
@@ -146,7 +148,7 @@ as separate operations instead of one composite operation.
 |---|---|
 | Connection refused, or nothing answers at `http://localhost:5000` | Start the service (step 1) and keep it running |
 | Port 5000 is taken by another program | Start the service with `-port=5001` and tell Claude the address |
-| The service closes at once with *"This API is disabled for Basic license type"* | The API needs a Steel, Complete or Enterprise license (or Trial or Educational) |
+| The service closes at once with *"This API is disabled for Basic license type"* | Your license does not include the API. For example, the Connection API needs a Steel, Complete or Enterprise license (or Trial or Educational) |
 | The service does not start at all | See *Troubleshooting* in the [Connection API getting started guide](https://developer.ideastatica.com/docs/api/connection-api/connection_api_getting_started.html) |
 | *"blocked by enterprise policy"* when you add the marketplace in Claude Code | Your organization allows only approved marketplaces; ask your Claude administrator to allow `idea-statica/agent-skills` |
 | Claude answers without using the skill | Mention IDEA StatiCa Connection in the request, or start it with `/ideastatica:connection-api` |

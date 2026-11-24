@@ -285,6 +285,9 @@ def check_version_bumps(base: str, plugins: list[tuple[str, Path]]) -> None:
             old = json.loads(git("show", f"{merge_base}:{manifest}")).get("version", "")
         except subprocess.CalledProcessError:
             continue  # the plugin is new on this branch
+        if not git("tag", "--list", f"{name}--v{old}").strip():
+            notes.append(f"{name}: version {old} has no release tag yet, so changes may stay on it")
+            continue
         new = json.loads((ROOT / manifest).read_text(encoding="utf-8")).get("version", "")
         old_tuple, new_tuple = version_tuple(old), version_tuple(new)
         if old_tuple and new_tuple and new_tuple <= old_tuple:

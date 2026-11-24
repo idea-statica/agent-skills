@@ -133,3 +133,20 @@ commit and publishes it according to the plugin's publish setting.
 - Ruleset on `main`: require a pull request and the `validate` and `install` checks. GitHub
   enforces rulesets on a private repository only on a paid plan.
 - Allow GitHub Actions to create releases (the `release` workflow uses `contents: write`).
+- Turn on private vulnerability reporting: **Settings > Advanced Security > Private
+  vulnerability reporting > Enable**. `SECURITY.md` sends reporters there.
+
+## Security reports
+
+Anthropic's directory terms require a way to receive vulnerability reports and a careful
+investigation of each one. `SECURITY.md` promises reporters a reply within five working days.
+
+- GitHub notifies only repository admins and security managers of a new private report, and
+  only those who watch the repository with **All Activity** or **Custom > Security alerts**.
+  Everyone who triages reports keeps that watch setting.
+- Reply to the reporter in the advisory within five working days, then assess the report.
+- Fix it through a pull request and release it as a new plugin version as described above,
+  then publish the advisory. If the pull request itself would reveal the problem before users
+  have the fix, work in the temporary private fork that GitHub offers from the advisory.
+- Pass a problem in an IDEA StatiCa application or service on to the team responsible for it,
+  and tell the reporter that you did.

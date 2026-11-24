@@ -115,11 +115,11 @@ automatically. Submitting needs a paid claude.ai plan; on Team and Enterprise pl
 organization Owner submits, or on Enterprise a member whose role includes the Directory
 permission. The GitHub account connected to claude.ai must be able to push to this repository.
 
-Anthropic's Software Directory Policy asks for a test account with sample data. Before
-submitting, have an IDEA StatiCa account ready whose license includes the API, and keep it
-valid while the plugin is listed. Give its sign-in only to Anthropic, through the contact of
-the submission, never in this repository. `TESTING.md` is the test plan; its first project
-prompt creates the sample project, so no project file needs to be published. Do not commit
+Anthropic's Software Directory Policy asks for a test account with sample data. `TESTING.md`
+covers it: every tester, Anthropic's reviewers included, uses IDEA StatiCa's public 14-day
+trial, and the first project prompt creates the sample project, so no project file needs to
+be published. If a reviewer asks for more through the submission's contact, decide then;
+never put a sign-in into this repository. Do not commit
 `.ideaCon` files saved under a company or personal account: a project file records the
 account of the license that saved it.
 

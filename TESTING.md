@@ -8,11 +8,10 @@ minutes.
 
 - **Windows with IDEA StatiCa 26.1**, from the
   [IDEA StatiCa downloads](https://www.ideastatica.com/product-downloads).
-- **An IDEA StatiCa account with a license that includes the Connection API:**
-  - Anthropic's directory reviewers: we provide a test account on request. Ask through the
-    contact given in our directory submission.
-  - Everyone else: the [14-day free trial](https://www.ideastatica.com/free-trial). Its terms
-    do not allow commercial use.
+- **An IDEA StatiCa account with a license that includes the Connection API.** The
+  [14-day free trial](https://www.ideastatica.com/free-trial) is enough for these tests; its
+  terms do not allow commercial use. Anthropic's directory reviewers can reach us through the
+  contact given in our directory submission.
 - **The Connection REST API service running** and **Claude Code with the plugin installed**,
   as steps 1 and 2 of the [README](README.md) describe.
 

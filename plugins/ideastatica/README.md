@@ -51,7 +51,9 @@ Try for example:
 - *"Save the PDF report of every connection in frame.ideaCon into a reports folder."*
 
 Composite operations created in the desktop application, such as an end plate or base plate
-assembly, are read-only through the API; change them through design parameters.
+assembly, are read-only through the API. Change them through design parameters, or have the
+agent build the same design from basic operations: the same plates, cuts, welds and bolts, but
+as separate operations instead of one composite operation.
 
 What is inside `skills/connection-api/`:
 

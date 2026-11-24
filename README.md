@@ -117,8 +117,9 @@ so Claude picks the skill. For example:
 Everything Claude builds through the API can be changed, and so can load effects, project
 settings and the design parameters defined in the desktop application. Operations created in
 the desktop application are not all editable: composite ones, such as an end plate or base
-plate assembly, are read-only through the API. Change them through design parameters, or have
-Claude rebuild them from basic operations.
+plate assembly, are read-only through the API. To change them, use design parameters, or have
+Claude build the same design from basic operations: the same plates, cuts, welds and bolts, but
+as separate operations instead of one composite operation.
 
 ## How updates reach you
 

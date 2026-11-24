@@ -1,5 +1,5 @@
 ---
-name: ideastatica-connection-api-http
+name: rest-api
 description: >-
   Use when writing or debugging code that drives the IDEA StatiCa Connection REST API
   (IdeaStatiCa.ConnectionRestApi.exe, "Connection Rest API 5.0")

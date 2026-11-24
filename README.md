@@ -5,7 +5,7 @@ agents to automate IDEA StatiCa products through their APIs.
 
 | Plugin | Skill | What it does | Works with |
 |---|---|---|---|
-| [`ideastatica-connection-api`](plugins/ideastatica-connection-api) | `ideastatica-connection-api-http` | Write and debug code that drives the Connection REST API over HTTP | Connection REST API service 26.1.1, `/api/5` |
+| [`ideastatica-connection-api`](plugins/ideastatica-connection-api) | `rest-api`, called as `/ideastatica-connection-api:rest-api` | Write and debug code that drives the Connection REST API over HTTP | Connection REST API service 26.1.1, `/api/5` |
 
 Each skill follows the open [Agent Skills](https://agentskills.io) format, so it works in
 Claude and in other agents that read `SKILL.md` skills.

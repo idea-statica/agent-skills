@@ -6,8 +6,8 @@ members, plates, welds, bolt and anchor grids, cuts and other operations, define
 effects, run the CBFEM calculation synchronously or as a background job, and read the
 results, reports and the updated `.ideaCon` file.
 
-The plugin contains one skill, `ideastatica-connection-api-http`. Your agent loads it on its
-own when a task mentions the Connection REST API, or you can call it by name.
+The plugin contains one skill, `rest-api`. Your agent loads it on its own when a task mentions
+the Connection REST API, or you can call it by name: `/ideastatica-connection-api:rest-api`.
 
 ## Install
 
@@ -22,7 +22,7 @@ For claude.ai, Claude Desktop, Cowork and other agents, see the
 
 ## What is inside
 
-- `skills/ideastatica-connection-api-http/SKILL.md`: the workflow, the rules that prevent the
+- `skills/rest-api/SKILL.md`: the workflow, the rules that prevent the
   most common failures, and pointers to the reference pages.
 - `reference/`: one page per area (endpoints, request and response shapes, members, plates,
   welds, cuts, grids, operations, parameters, cross-sections, raw results, diagnostics).

@@ -7,7 +7,7 @@ The tag has the form `<plugin>--v<version>`, as `claude plugin tag` creates it. 
 output folder:
 
     <plugin>-<version>.zip         the plugin folder, for claude.ai "Upload plugin"
-    <skill>-<version>.zip          one per skill, the skill folder at the top level, for
+    <plugin>-<skill>-<version>.zip one per skill, the skill folder at the top level, for
                                    claude.ai "Upload skill" and manual installs
     release-notes.md               the CHANGELOG section for the version
 
@@ -71,7 +71,7 @@ def main() -> int:
 
     write_zip(plugin_dir, out / f"{plugin}-{version}.zip", plugin)
     for skill_dir in sorted(d for d in (plugin_dir / "skills").iterdir() if d.is_dir()):
-        write_zip(skill_dir, out / f"{skill_dir.name}-{version}.zip", skill_dir.name)
+        write_zip(skill_dir, out / f"{plugin}-{skill_dir.name}-{version}.zip", skill_dir.name)
 
     notes = changelog_section(plugin_dir / "CHANGELOG.md", version)
     (out / "release-notes.md").write_text(notes, encoding="utf-8", newline="\n")

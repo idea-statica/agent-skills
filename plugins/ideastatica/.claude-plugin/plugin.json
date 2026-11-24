@@ -1,0 +1,20 @@
+{
+  "name": "ideastatica",
+  "displayName": "IDEA StatiCa",
+  "version": "1.0.0",
+  "description": "Skills that teach AI agents to automate IDEA StatiCa products through their APIs. Includes connection-api: write and debug code that drives the IDEA StatiCa Connection REST API over HTTP, from steel connection modelling and CBFEM calculation to results, reports and design parameters.",
+  "author": {
+    "name": "IDEA StatiCa",
+    "url": "https://www.ideastatica.com"
+  },
+  "homepage": "https://github.com/idea-statica/agent-skills/tree/main/plugins/ideastatica",
+  "repository": "https://github.com/idea-statica/agent-skills",
+  "license": "MIT",
+  "keywords": [
+    "ideastatica",
+    "steel-connection",
+    "cbfem",
+    "structural-engineering",
+    "rest-api"
+  ]
+}

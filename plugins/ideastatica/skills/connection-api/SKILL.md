@@ -54,6 +54,14 @@ Local HTTP service automating steel-connection design + CBFEM calculation (same 
 as the desktop Connection app). Provides the stable API plus **typed per-kind operations
 CRUD** (13 kinds).
 
+> **IDEA StatiCa calculates; you orchestrate.** Every check result, utilization and verdict
+> you report comes from the service's responses: present it as IDEA StatiCa's result
+> ("IDEA StatiCa reports …"). Never compute, estimate or extrapolate a check, a resistance or a
+> utilization yourself, and never call a connection safe or failing from your own reasoning.
+> A result that is missing or `Not calculated` is reported as such, not filled in. A change
+> you suggest (a thicker plate, more bolts) is a proposal until IDEA StatiCa has recalculated
+> it.
+
 ## Service version
 
 > This skill applies to **service 26.1.1.2809** (as `GET /api/5/clients/idea-service-version`

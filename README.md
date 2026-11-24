@@ -124,6 +124,8 @@ A manually installed plugin or skill does not update itself.
 2. Ask Claude: *"Is the IDEA StatiCa Connection REST API service running? Tell me its
    version."* Claude answers with the service version, for example `26.1.1.2809`.
 
+For a complete test with a sample project, see [TESTING.md](TESTING.md).
+
 ## 4. What to ask first
 
 Name IDEA StatiCa Connection in your request, or start it with `/ideastatica:connection-api`,

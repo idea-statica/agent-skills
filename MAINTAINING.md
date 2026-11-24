@@ -115,6 +115,14 @@ automatically. Submitting needs a paid claude.ai plan; on Team and Enterprise pl
 organization Owner submits, or on Enterprise a member whose role includes the Directory
 permission. The GitHub account connected to claude.ai must be able to push to this repository.
 
+Anthropic's Software Directory Policy asks for a test account with sample data. `TESTING.md`
+covers it: every tester, Anthropic's reviewers included, uses IDEA StatiCa's public 14-day
+trial, and the first project prompt creates the sample project, so no project file needs to
+be published. If a reviewer asks for more through the submission's contact, decide then;
+never put a sign-in into this repository. Do not commit
+`.ideaCon` files saved under a company or personal account: a project file records the
+account of the license that saved it.
+
 1. Open the developer portal at <https://claude.ai/directory/manage>, select **Submit new** and
    then **Plugin bundle**.
 2. Repository `idea-statica/agent-skills`, plugin path `plugins/<plugin>`, branch `main`.

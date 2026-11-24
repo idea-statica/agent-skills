@@ -1,0 +1,47 @@
+name: validate
+
+on:
+  pull_request:
+  push:
+    branches: [main]
+
+permissions:
+  contents: read
+
+jobs:
+  validate:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v6
+        with:
+          fetch-depth: 0  # the version bump check compares with the base branch
+
+      - uses: actions/setup-python@v6
+        with:
+          python-version: "3.12"
+
+      - name: Install PyYAML
+        run: pip install pyyaml==6.0.3
+
+      - name: Repository checks
+        run: python scripts/check_repo.py
+
+      - name: Version bump check
+        if: github.event_name == 'pull_request'
+        run: python scripts/check_repo.py --base "origin/${{ github.base_ref }}"
+
+      - uses: actions/setup-node@v6
+        with:
+          node-version: "22"
+
+      # The latest Claude Code, so validation matches what users run.
+      - name: Install Claude Code
+        run: npm install -g @anthropic-ai/claude-code@latest
+
+      - name: claude plugin validate
+        run: |
+          claude --version
+          claude plugin validate --strict .
+          for dir in plugins/*/; do
+            claude plugin validate --strict "$dir"
+          done

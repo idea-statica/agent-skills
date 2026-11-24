@@ -1,0 +1,14 @@
+{
+  "name": "ideastatica-skills",
+  "description": "Agent skills and Claude plugins from IDEA StatiCa for automating structural steel and concrete design workflows.",
+  "owner": {
+    "name": "IDEA StatiCa"
+  },
+  "plugins": [
+    {
+      "name": "ideastatica-connection-api",
+      "source": "./plugins/ideastatica-connection-api",
+      "description": "Write and debug code that drives the IDEA StatiCa Connection REST API over HTTP."
+    }
+  ]
+}

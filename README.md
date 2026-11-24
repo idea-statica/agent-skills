@@ -67,11 +67,18 @@ http://localhost:5001".
 
 ### Claude Code
 
-Type these two commands in Claude Code (not in a terminal):
+Type these two commands at the Claude Code prompt, where you write your requests to Claude:
 
 ```
 /plugin marketplace add idea-statica/agent-skills
 /plugin install ideastatica@ideastatica-skills
+```
+
+Or run the same from a terminal such as PowerShell:
+
+```
+claude plugin marketplace add idea-statica/agent-skills
+claude plugin install ideastatica@ideastatica-skills
 ```
 
 To receive updates automatically, open `/plugin`, go to **Marketplaces**, select

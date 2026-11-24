@@ -28,8 +28,8 @@ versions.
 
 | Part | Raise it when |
 |---|---|
-| MAJOR | A skill is removed or split, or the skill moves to a new API route version (for example `/api/6`) |
-| MINOR | The skill covers a new service release, or gains a reference page or example |
+| MAJOR | A skill is removed, renamed or split, or a skill moves to a new API route version (for example `/api/6`) |
+| MINOR | A skill is added, a skill covers a new service release, or a skill gains a reference page or example |
 | PATCH | Corrections and clarifications that keep the same service release |
 
 ## Release a new version
@@ -82,7 +82,20 @@ Remove it again with `claude plugin marketplace remove ideastatica-skills`. Wher
 settings allow only approved marketplace sources, use `claude --plugin-dir plugins/<plugin>`
 instead, which loads the plugin for one session.
 
+## Add a skill for another API
+
+All IDEA StatiCa skills ship in the `ideastatica` plugin, so another API is a new skill, not a
+new plugin. Users who installed the plugin receive it with the next update.
+
+1. Create `plugins/ideastatica/skills/<product>-api/SKILL.md`. The folder name and the `name`
+   in its frontmatter match, e.g. `member-api`, called as `/ideastatica:member-api`.
+2. Add a row to the skill tables in the root README and the plugin README, and to the plugin
+   README's compatibility table.
+3. Raise the MINOR version and add a CHANGELOG entry.
+
 ## Add a new plugin
+
+Only for something that must install separately from `ideastatica`.
 
 1. Create `plugins/<plugin>/` with `.claude-plugin/plugin.json`, `README.md` (at least 40
    words outside code blocks), `LICENSE`, `CHANGELOG.md` and `skills/<skill>/SKILL.md`.

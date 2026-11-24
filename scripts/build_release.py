@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
 """Build the release files for one plugin tag.
 
-    python scripts/build_release.py ideastatica-connection-api--v1.0.0 --out dist
+    python scripts/build_release.py ideastatica--v1.0.0 --out dist
 
 The tag has the form `<plugin>--v<version>`, as `claude plugin tag` creates it. Writes to the
 output folder:

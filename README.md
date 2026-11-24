@@ -3,9 +3,12 @@
 Agent skills and Claude plugins from [IDEA StatiCa](https://www.ideastatica.com) that teach AI
 agents to automate IDEA StatiCa products through their APIs.
 
-| Plugin | Skill | What it does | Works with |
+All skills ship in one plugin, [`ideastatica`](plugins/ideastatica). Install it once; skills
+for further IDEA StatiCa APIs arrive with its updates.
+
+| Skill | Call it as | What it does | Works with |
 |---|---|---|---|
-| [`ideastatica-connection-api`](plugins/ideastatica-connection-api) | `rest-api`, called as `/ideastatica-connection-api:rest-api` | Write and debug code that drives the Connection REST API over HTTP | Connection REST API service 26.1.1, `/api/5` |
+| `connection-api` | `/ideastatica:connection-api` | Write and debug code that drives the Connection REST API over HTTP | Connection REST API service 26.1.1, `/api/5` |
 
 Each skill follows the open [Agent Skills](https://agentskills.io) format, so it works in
 Claude and in other agents that read `SKILL.md` skills.
@@ -18,19 +21,19 @@ Add the marketplace once, then install the plugin:
 
 ```
 /plugin marketplace add idea-statica/agent-skills
-/plugin install ideastatica-connection-api@ideastatica-skills
+/plugin install ideastatica@ideastatica-skills
 ```
 
 To receive updates automatically, open `/plugin`, go to **Marketplaces**, select
 `ideastatica-skills` and turn on auto-update. Without it, update with
-`claude plugin update ideastatica-connection-api@ideastatica-skills`.
+`claude plugin update ideastatica@ideastatica-skills`.
 
 ### claude.ai, Claude Desktop and Cowork
 
 1. Open **Customize > Plugins** and select **Add > Add marketplace**.
 2. Enter `idea-statica/agent-skills`.
 3. Turn on **Sync automatically** for the marketplace so updates arrive by themselves.
-4. Add the **IDEA StatiCa Connection API** plugin.
+4. Add the **IDEA StatiCa** plugin.
 
 A plugin added on claude.ai also loads in Claude Code when you sign in with the same account.
 

@@ -6,9 +6,9 @@
   },
   "plugins": [
     {
-      "name": "ideastatica-connection-api",
-      "source": "./plugins/ideastatica-connection-api",
-      "description": "Write and debug code that drives the IDEA StatiCa Connection REST API over HTTP."
+      "name": "ideastatica",
+      "source": "./plugins/ideastatica",
+      "description": "Skills for automating IDEA StatiCa products through their APIs, starting with the Connection REST API."
     }
   ]
 }

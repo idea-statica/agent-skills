@@ -96,7 +96,8 @@ mid-surface (thickness is centred on it).
   (for example `StatiCa 26.1`). The folder can be chosen in the installer, and several
   versions can be installed side by side: use the one the user names. `-port=NNNN` selects
   another port; the default is 5000. While running, the service holds a license seat, so
-  start it yourself only when the user agrees.
+  start it yourself only when the user agrees, and stop it again when your work is done.
+  Never restart or stop a service the user started.
 - **It exits at start with "This API is disabled for Basic license type"** → the API needs a
   Steel, Complete or Enterprise license (Trial and Educational licenses also work, but their
   terms do not allow commercial use). Nothing in the request can fix it; tell the user.

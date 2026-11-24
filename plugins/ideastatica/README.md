@@ -34,7 +34,7 @@ step, including other ports, other agents and troubleshooting.
 
 ## Install
 
-Type these two commands in Claude Code:
+Type these two commands at the Claude Code prompt, where you write your requests:
 
 ```
 /plugin marketplace add idea-statica/agent-skills

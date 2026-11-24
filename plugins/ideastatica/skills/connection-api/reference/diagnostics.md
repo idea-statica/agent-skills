@@ -98,8 +98,8 @@ mid-surface (thickness is centred on it).
   another port; the default is 5000. While running, the service holds a license seat, so
   start it yourself only when the user agrees.
 - **It exits at start with "This API is disabled for Basic license type"** → the API needs a
-  Steel, Complete or Enterprise license (Trial and Educational licenses also work). Nothing
-  in the request can fix it; tell the user.
+  Steel, Complete or Enterprise license (Trial and Educational licenses also work, but their
+  terms do not allow commercial use). Nothing in the request can fix it; tell the user.
 - Do not scan ports or guess an address. Ask the user where the service runs, then
   `GET /api/5/clients/idea-service-version` to learn its build.
 

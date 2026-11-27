@@ -146,7 +146,8 @@ settings and the design parameters defined in the desktop application. Operation
 the desktop application are not all editable: composite ones, such as an end plate or base
 plate assembly, are read-only through the API. To change them, use design parameters, or have
 Claude build the same design from basic operations: the same plates, cuts, welds and bolts, but
-as separate operations instead of one composite operation.
+as separate operations instead of one composite operation. When Claude opens a project, it checks
+for such operations and tells you which ones it cannot change.
 
 ## Watch the model in IDEA StatiCa Connection
 
@@ -162,8 +163,9 @@ window reopens the saved file, which takes a few seconds.
   live view again"*.
 - If you close the window, Claude stops updating it and opens it again only when you ask, for
   example *"show it in Connection"*.
-- The window shows a preview copy, so saving in it never changes your project file. Before an
-  update would replace edits you made in the window, Claude asks whether to continue from them.
+- You can change the model in the window too. With your next request, Claude notices the
+  change and asks whether to continue from it. The window shows a preview copy, so saving in it
+  never changes your project file, and Claude never replaces your edits without asking.
 - In that window, File > Open and New are disabled. Like any Connection window, it uses your
   license while it is open. The live view needs Python with the package `grpcio`
   (`pip install grpcio`).

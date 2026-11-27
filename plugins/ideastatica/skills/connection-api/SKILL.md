@@ -301,6 +301,15 @@ Desktop-authored composite assemblies (a base-plate or end-plate assembly, …) 
 to typed GETs and read-only — compose equivalents from primitives instead. DTO tables,
 shared building blocks and wire gotchas: `reference/operations.md`.
 
+**After you open an existing project, and before you change its operations,** run
+`python "<this skill's folder>/scripts/check_operations.py" --client-id <ClientId> --project-id
+<projectId>` (or pass the `.ideaCon` path instead of the two ids). It lists the operations that
+`GET .../operations` returns and no typed GET does. When `readOnlyCount` is above 0, tell the
+user once, in your own words from its `message`, which operations the API can only read, and
+offer the ways forward: design parameters, if the project defines some for them; the same design
+rebuilt from basic operations, which replaces the composite operation; or a change in the desktop
+application. Never PUT or POST at their ids (409).
+
 ## Reference routing
 
 Keyed on the question you actually have, not on how the docs are organized.
@@ -329,7 +338,8 @@ Keyed on the question you actually have, not on how the docs are organized.
 | **I want a parameter to drive a property** — create a parameter, find what is drivable, link it, change the model from one value; and the links that answer 200 and do nothing | `reference/parameters.md` (the per-`valueType` applies/refuses grid stays in `reference/field-matrix.md` § parameters) |
 | **I need a cross-section** — its outline as arcs and lines, replacing a library section in place, or authoring one from dimensions (the 26 parametric shapes, the four dimension `$type`s) | `reference/cross-sections.md` |
 | common enums (CountryCode, analysis types) | `reference/schemas.md` |
-| **the user wants to watch the model in the desktop application** while you work, or closed that window | `reference/live-view.md` (helper `scripts/live_view.py`) |
+| **the user wants to watch the model in the desktop application** while you work, closed that window, or changed the model in it | `reference/live-view.md` (helper `scripts/live_view.py`) |
+| **which operations of an opened project the API cannot change** (composites made in the desktop application) | `scripts/check_operations.py` (§ Typed operations — wire contract) |
 
 ## Frequently-needed shapes (stable API)
 

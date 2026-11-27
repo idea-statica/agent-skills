@@ -95,6 +95,11 @@ Claude asks whether you want to watch the changes in IDEA StatiCa Connection. Ch
 side by side**. A Connection window opens on the right part of the screen, and after the run
 it shows the model with the 12 mm plate.
 
+In the Connection window, change the end plate thickness to 15 mm without saving it, then ask
+Claude to *"let IDEA StatiCa recalculate it and save it as end-plate-15mm.ideaCon"*. Claude
+notices your change in the window and asks whether to continue from it. Answer that it should:
+`end-plate-15mm.ideaCon` then holds the 15 mm plate you set in the window.
+
 Now close the Connection window and ask for a 14 mm plate, saved as `end-plate-14mm.ideaCon`.
 Claude saves the file, says once that the Connection window is closed, and does not open it
 again. When you then ask Claude to *"show it in Connection"*, the window opens with the 14 mm

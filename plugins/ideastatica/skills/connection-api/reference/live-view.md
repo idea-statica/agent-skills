@@ -82,11 +82,34 @@ the answer. Ask both questions together:
 | the user says, for example | command |
 |---|---|
 | "show it in Connection", "open the live view" | `start`, then `show` the latest file |
+| "I changed it in Connection, continue from there" | `check --adopt`, then § Edits made in the window |
 | "always open the live view" | `remember always`, and `start` if the window is not open |
 | "don't offer the live view any more" | `remember never` (the open window stays; close it with `stop` only if they also ask) |
 | "ask me about the live view again" | `remember ask` |
 | "close the Connection window" | `stop` |
 | "put the windows side by side again" | `arrange` |
+
+## Edits made in the window
+
+The user may change the model in the window between two requests. While the live view is on, run
+`live_view.py check` before the first change of every request, so you never build on data the
+user has replaced:
+
+| exit | meaning | what you do |
+|---|---|---|
+| 0 | no edits in the window | carry on |
+| 4 | the user edited the model in the window, saved or not | ask: *"You changed the model in the Connection window. Shall I continue from your changes, or replace them with mine?"* |
+| 3 | the user closed the window without saving edits | carry on, nothing to take over |
+| 5 | the live view is not on | carry on |
+
+**Continue from their changes:**
+1. `live_view.py check --adopt`. It saves unsaved edits in the window into the preview copy and prints the path of that copy.
+2. Open that copy in the service (`POST /api/5/projects/open`) and close the project you had open.
+3. Read the model again, because ids can change.
+4. Run `check_operations.py` on the opened project. Edits in the desktop application can create composite operations that the API cannot change (§ Typed operations in `SKILL.md`).
+5. Make the user's change, save it to their output file and `show` it.
+
+**Replace them:** make your change as usual, and when `show` stops with exit 4, run `show --replace-edited`.
 
 ## Running it
 
@@ -115,7 +138,7 @@ python "<skill folder>/scripts/live_view.py" show "C:\path\to\model.ideaCon"
 |---|---|---|
 | 0 | shown | nothing to say |
 | 3 | the user closed the window | say once: *"The Connection window is closed, so I am no longer updating it. Say "show it in Connection" when you want it back."* Do not run `start` again until the user asks. Do not change the remembered choice: closing the window is not "never" |
-| 4 | the window holds edits that the update would replace: not saved yet, or saved into the preview copy | ask the user whether to continue from their edits or replace them. Continue: they save in the window if not saved yet, and you open the preview copy the message names (`POST /api/5/projects/open`) before your next change. Replace: `show --replace-edited` |
+| 4 | the window holds edits that the update would replace: not saved yet, or saved into the preview copy | ask, as in § Edits made in the window. Continue: `check --adopt` and the steps there, then repeat your change on top of their edits. Replace: `show --replace-edited` |
 | 5 | the live view is not on | say nothing; it was never started, the user stopped it, or it is still starting (`start` first) |
 | 6 | sent, but the window did not confirm the open | usually it opened anyway; a dialog may wait in the window. Mention it only if the user says the window did not change |
 | 1 | error | report the message; the live view is optional, so carry on with the API work |
@@ -142,7 +165,7 @@ the folder brings the question back.
 `IdeaConnection.exe -cmd:automation-<id> -grpcPort:<port> user-mode 0` starts the application
 as a gRPC server on `localhost:<port>`; it signals the named event `IdeaStatiCaEvent<id>` when
 ready. The helper calls the application's automation methods (`OpenProjectAsync`,
-`GetIsEdited`, `Shutdown`) by reflection over `/GrpcService/ConnectAsync`, the channel that
+`GetIsEdited`, `SaveCurrentItemAsync`, `Shutdown`) by reflection over `/GrpcService/ConnectAsync`, the channel that
 IDEA StatiCa Checkbot uses; the contract is `IdeaStatiCa.Plugin` in
 [ideastatica-public](https://github.com/idea-statica/ideastatica-public). It is not a documented
 API of its own: if a later version changes it, the live view stops working while the REST API

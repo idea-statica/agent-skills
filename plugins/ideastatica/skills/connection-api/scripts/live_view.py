@@ -8,6 +8,7 @@ The agent runs this helper; the user does not need to. Windows only, Python 3.8 
     python live_view.py remember ask|always|never [--layout side-by-side|window]
     python live_view.py start [--auto] [--service URL] [--install DIR] [--layout side-by-side|window]
     python live_view.py show FILE.ideaCon [--replace-edited]
+    python live_view.py check [--adopt]
     python live_view.py arrange
     python live_view.py stop
 
@@ -15,17 +16,19 @@ The agent runs this helper; the user does not need to. Windows only, Python 3.8 
 running Connection REST API service. With --auto (the remembered "always" choice) it refuses to
 reopen a window the user closed while the same agent session runs. `show` copies a saved .ideaCon
 to a preview copy and opens that copy in the window, so saving in the window never writes to the
-agent's file. `show` never starts a window.
+agent's file. `show` never starts a window. `check` tells, before the next change, whether the
+user edited the model in the window; `check --adopt` saves those edits into the preview copy and
+names the file to open in the service.
 
-Exit codes: 0 done; 1 error; 2 bad arguments; 3 the user closed the window; 4 the window holds
-edits that the next update would replace (unsaved, or saved into the preview copy); 5 the live view
-is not on (never started, stopped, or still starting); 6 the file was sent but the window did not
-confirm the open.
+Exit codes: 0 done; 1 error; 2 bad arguments; 3 the user closed the window; 4 the user edited the
+model in the window (unsaved, or saved into the preview copy) and nothing was replaced; 5 the live
+view is not on (never started, stopped, or still starting); 6 the file was sent but the window did
+not confirm the open.
 
 How it works: `IdeaConnection.exe -cmd:automation-<id> -grpcPort:<port> user-mode 0` makes the
 application a gRPC server on localhost (contract: IdeaStatiCa.Plugin in
 github.com/idea-statica/ideastatica-public). The helper calls its automation methods
-(OpenProjectAsync, GetIsEdited, Shutdown) by reflection, the channel IDEA StatiCa Checkbot uses.
+(OpenProjectAsync, GetIsEdited, SaveCurrentItemAsync, Shutdown) by reflection, the channel IDEA StatiCa Checkbot uses.
 The application cannot patch an open model, so every update reopens the file.
 """
 
@@ -817,6 +820,47 @@ def cmd_show(a) -> int:
                         EXIT_UNCONFIRMED)
 
 
+def cmd_check(a) -> int:
+    """Before the next change: did the user edit the model in the window? With --adopt, take the edits over."""
+    state = load_state()
+    window = state["window"]
+    status = window_status(window)
+    if status in ("not-started", "starting"):
+        raise LiveViewError("The live view is not on.", EXIT_OFF)
+    shown = window.get("shown")
+    unsaved = False
+    if status == "open" and main_window(window["pid"]):
+        require_grpc()
+        unsaved = bool(invoke(window["port"], "GetIsEdited", timeout=30))
+    saved = _preview_changed(shown)
+    if not unsaved and not saved:
+        if status != "open":
+            raise LiveViewError("The user closed the Connection window, without saving edits in it.", EXIT_CLOSED)
+        print("No edits in the Connection window since the last update.")
+        return 0
+    if not shown:
+        raise LiveViewError("The window holds edits, but it shows no file from this helper, so there is nothing to "
+                            "take over. Ask the user to save their work in the window under a name of their own.")
+    what = "edits they have not saved yet" if unsaved else "edits they saved there"
+    if not a.adopt:
+        raise LiveViewError(f"The user changed the model in the Connection window ({what}). Ask whether to continue "
+                            f"from these edits or to replace them with your next update. To continue: check --adopt.",
+                            EXIT_EDITED)
+    preview = Path(shown["preview"])
+    if unsaved:
+        before = preview.stat().st_mtime_ns
+        invoke(window["port"], "SaveCurrentItemAsync", timeout=120)
+        deadline = time.time() + 30
+        while time.time() < deadline and preview.stat().st_mtime_ns == before:
+            time.sleep(0.5)
+        if preview.stat().st_mtime_ns == before:
+            raise LiveViewError("The window did not save the edits; a dialog may be waiting in it.")
+    _record_shown(state, Path(shown["source"]), preview)  # the edits are now the agreed state
+    print(f"Took over the user's edits. Before your next change, open this file in the service "
+          f"(POST /api/5/projects/open), close the project you had open, and read the model again:\n{preview}")
+    return 0
+
+
 def cmd_arrange(_a) -> int:
     """Put the open window side by side with the agent's window again, when the user asks."""
     state = load_state()
@@ -876,6 +920,10 @@ def main() -> int:
                       help="replace edits in the window; only after the user agreed")
     show.add_argument("--timeout", type=float, default=100.0)
     show.set_defaults(func=cmd_show)
+    check = sub.add_parser("check")
+    check.add_argument("--adopt", action="store_true",
+                       help="take the user's edits over: save them in the window and name the file to open")
+    check.set_defaults(func=cmd_check)
     sub.add_parser("arrange").set_defaults(func=cmd_arrange)
     sub.add_parser("stop").set_defaults(func=cmd_stop)
     a = parser.parse_args()

@@ -12,8 +12,13 @@ what each part of the version means here.
   or on its own, and whether to remember the answer. The window reopens a preview copy of each
   saved version of the model, so saving in the window never changes the project file. When the
   user closes the window, the agent does not open it again until asked, also with the answer
-  remembered, and it does not replace edits made in the window without asking. New helper
-  `scripts/live_view.py` and reference page `reference/live-view.md`.
+  remembered, and it does not replace edits made in the window without asking. When the user
+  changes the model in the window, the agent notices it with the next request and asks whether
+  to continue from those changes. New helper `scripts/live_view.py` and reference page
+  `reference/live-view.md`.
+- `connection-api`: after opening a project, the agent checks which operations the API can only
+  read, typically composite operations created in the desktop application such as an end plate,
+  and tells the user before changing anything. New script `scripts/check_operations.py`.
 
 ## 1.0.1 - 2026-11-24
 

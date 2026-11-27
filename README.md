@@ -148,6 +148,23 @@ plate assembly, are read-only through the API. To change them, use design parame
 Claude build the same design from basic operations: the same plates, cuts, welds and bolts, but
 as separate operations instead of one composite operation.
 
+## Watch the model in IDEA StatiCa Connection
+
+When Claude builds or changes a model on your computer, it asks once whether you want to watch
+the changes in IDEA StatiCa Connection. If you say yes, Claude opens a Connection window from
+the same installation as the service and updates it after each change. The window opens either
+side by side with the window you work in, taking the right 60 % of the screen, or on its own.
+Claude does not click in that window: it changes the model through the API, saves it, and the
+window reopens the saved file, which takes a few seconds.
+
+- Claude can remember your answer and stop asking. Say *"start the live view"* or *"stop the
+  live view"* to change it.
+- If you close the window, Claude stops updating it and opens it again only when you ask.
+- Edits you make in the window stay in the window. To have Claude continue from them, save them
+  and tell Claude. Before an update would replace edits you have not saved, Claude asks.
+- In that window, File > Open and New are disabled. It needs the Python package `grpcio`
+  (`pip install grpcio`).
+
 ## How updates reach you
 
 | Where you installed from | Updates |
@@ -170,11 +187,14 @@ as separate operations instead of one composite operation.
 
 ## Privacy and data
 
-The plugin itself sends nothing anywhere. It contains instructions, reference pages and example
-code, with no hooks, no MCP servers and no programs that run on their own, and its example code
-talks only to the IDEA StatiCa service on your own computer. What Claude reads while it works,
-such as your requests, model data and script output, is part of your Claude conversation and is
-handled under the terms of your Claude plan.
+The plugin itself sends nothing anywhere. It contains instructions, reference pages, example
+code and one helper script, with no hooks, no MCP servers and no programs that run on their
+own. Its example code talks only to the IDEA StatiCa service on your own computer. The live view
+helper runs only when Claude starts it, talks only to the Connection application on your
+computer and stores your answer to the live view question in
+`%LOCALAPPDATA%\IDEA StatiCa agent skills`. What Claude reads while it works, such as your
+requests, model data and script output, is part of your Claude conversation and is handled
+under the terms of your Claude plan.
 
 ## More about the APIs
 

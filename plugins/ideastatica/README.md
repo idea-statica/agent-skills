@@ -57,6 +57,12 @@ Try for example:
   prints which checks fail."*
 - *"Save the PDF report of every connection in frame.ideaCon into a reports folder."*
 
+When the agent builds or changes a model on your computer, it offers once to show the changes
+in an IDEA StatiCa Connection window, side by side with the window you work in or on its own,
+and can remember your answer. If you close that window, the agent does not open it again until
+you ask. The window reopens each saved version of the model; edits you make there reach the
+agent only when you save them and tell it.
+
 Composite operations created in the desktop application, such as an end plate or base plate
 assembly, are read-only through the API. Change them through design parameters, or have the
 agent build the same design from basic operations: the same plates, cuts, welds and bolts, but
@@ -70,19 +76,25 @@ What is inside `skills/connection-api/`:
   welds, cuts, grids, operations, parameters, cross-sections, raw results, diagnostics).
 - `examples/`: runnable Python and C# examples (quickstart, asynchronous calculation, load
   effects, parameters, detailed and raw results, batch reports, typed operations).
+- `scripts/live_view.py`: the helper the agent runs for the live view in the desktop
+  application (Windows, Python with `grpcio`).
 
 ## Compatibility
 
 | Plugin version | Skill | IDEA StatiCa | Service build checked | API |
 |---|---|---|---|---|
+| 1.1.0 | `connection-api` | 26.1 | 26.1.1.2809 | `/api/5` |
 | 1.0.1 | `connection-api` | 26.1 | 26.1.1.2809 | `/api/5` |
 | 1.0.0 | `connection-api` | 26.1 | 26.1.1.2809 | `/api/5` |
 
 ## Privacy and data
 
-The plugin itself sends nothing anywhere. It contains instructions, reference pages and example
-code only, with no hooks, no MCP servers and no programs that run on their own, and its example
-code talks only to the IDEA StatiCa service on your own computer. What the agent reads while it
+The plugin itself sends nothing anywhere. It contains instructions, reference pages, example
+code and one helper script, with no hooks, no MCP servers and no programs that run on their
+own. Its example code talks only to the IDEA StatiCa service on your own computer. The live
+view helper runs only when the agent starts it, talks only to the Connection application on
+your computer and stores your answer to the live view question in
+`%LOCALAPPDATA%\IDEA StatiCa agent skills`. What the agent reads while it
 works, such as your requests, model data and script output, is part of your conversation with
 it and is handled under the terms of your plan with its provider.
 

@@ -156,6 +156,23 @@ already running for that project. What a cancel leaves in each connection and ho
 long/multi-connection runs — it shows progress, can be cancelled and holds no request open; the
 synchronous path stays correct for a single quick check.
 
+## Live view in the desktop application (optional)
+
+When a request builds or changes a model and you run commands on the user's Windows computer,
+the user can watch the model in an IDEA StatiCa Connection window that updates after each of
+your runs. Before the first run that changes the model, run `python scripts/live_view.py
+status`. When its `"window"` is not `"open"`, follow the remembered `"mode"`:
+
+- `ask`: ask once per conversation whether to open it, side by side or in its own window, and
+  whether to remember the answer;
+- `always`: `start` it without asking;
+- `never`: do not offer it.
+
+After every run that changed the model, save the `.ideaCon` and `show` it. **`show` never opens a
+window. When the user has closed it (exit 3), say so once and do not start it again until they
+ask.** The question, the commands, the exit codes and what happens to edits made in the window
+are in `reference/live-view.md`.
+
 ## Iron rules (violating any of these is the top cause of failures)
 
 1. **`ClientId` header on every request** (except connect-client and
@@ -310,6 +327,7 @@ Keyed on the question you actually have, not on how the docs are organized.
 | **I want a parameter to drive a property** — create a parameter, find what is drivable, link it, change the model from one value; and the links that answer 200 and do nothing | `reference/parameters.md` (the per-`valueType` applies/refuses grid stays in `reference/field-matrix.md` § parameters) |
 | **I need a cross-section** — its outline as arcs and lines, replacing a library section in place, or authoring one from dimensions (the 26 parametric shapes, the four dimension `$type`s) | `reference/cross-sections.md` |
 | common enums (CountryCode, analysis types) | `reference/schemas.md` |
+| **the user wants to watch the model in the desktop application** while you work, or closed that window | `reference/live-view.md` (helper `scripts/live_view.py`) |
 
 ## Frequently-needed shapes (stable API)
 

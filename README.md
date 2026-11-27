@@ -146,7 +146,31 @@ settings and the design parameters defined in the desktop application. Operation
 the desktop application are not all editable: composite ones, such as an end plate or base
 plate assembly, are read-only through the API. To change them, use design parameters, or have
 Claude build the same design from basic operations: the same plates, cuts, welds and bolts, but
-as separate operations instead of one composite operation.
+as separate operations instead of one composite operation. When Claude opens a project, it checks
+for such operations and tells you which ones it cannot change.
+
+## Watch the model in IDEA StatiCa Connection
+
+When Claude builds or changes a model on your computer, it asks once whether you want to watch
+the changes in IDEA StatiCa Connection. If you say yes, Claude opens a Connection window from
+the same installation as the service and updates it after each change. The window opens either
+side by side with the window you work in, taking the right 60 % of the screen, or on its own.
+Claude does not click in that window: it changes the model through the API, saves it, and the
+window reopens the saved file, which takes a few seconds.
+
+- Claude can remember your answer and stop asking. To change it later, say for example
+  *"always open the live view"*, *"don't offer the live view any more"* or *"ask me about the
+  live view again"*.
+- If you close the window, Claude stops updating it and opens it again only when you ask, for
+  example *"show it in Connection"*.
+- You can change the model in the window too. With your next request, Claude continues from
+  the state in the window and tells you so; say so if you want your changes there dropped
+  instead. Results calculated in the window do not carry over: for numbers, Claude has IDEA
+  StatiCa calculate through the API. The window shows a preview copy, so saving in it never
+  changes your project file.
+- In that window, File > Open and New are disabled. Like any Connection window, it uses your
+  license while it is open. The live view needs Python; the first time, Claude installs the
+  Python package `grpcio` once you confirm the command.
 
 ## How updates reach you
 
@@ -170,11 +194,16 @@ as separate operations instead of one composite operation.
 
 ## Privacy and data
 
-The plugin itself sends nothing anywhere. It contains instructions, reference pages and example
-code, with no hooks, no MCP servers and no programs that run on their own, and its example code
-talks only to the IDEA StatiCa service on your own computer. What Claude reads while it works,
-such as your requests, model data and script output, is part of your Claude conversation and is
-handled under the terms of your Claude plan.
+The plugin itself sends nothing anywhere. It contains instructions, reference pages, example
+code and one helper script, with no hooks, no MCP servers and no programs that run on their
+own. Its example code talks only to the IDEA StatiCa service on your own computer. The live view
+helper runs only when Claude starts it. It asks the service on your computer for its version,
+starts and talks to the Connection application there, reads that application's log files and
+keeps your answer to the live view question, the window it started and the preview copies in
+`%LOCALAPPDATA%\IDEA StatiCa agent skills`. The Connection window it starts stays open until
+you close it. What Claude reads while it works, such as your
+requests, model data and script output, is part of your Claude conversation and is handled
+under the terms of your Claude plan.
 
 ## More about the APIs
 

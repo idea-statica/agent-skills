@@ -1,7 +1,7 @@
 # Testing the plugin
 
 How to check the `ideastatica` plugin end to end, for Anthropic's directory reviewers and for
-anyone who evaluates the plugin. Once IDEA StatiCa is installed, the tests take about 20
+anyone who evaluates the plugin. Once IDEA StatiCa is installed, the tests take about 25
 minutes.
 
 ## What you need
@@ -43,6 +43,9 @@ Claude answers with the service version, for example `26.1.1.2809`.
 > C:\Temp\ideastatica-test\end-plate-20mm.ideaCon and show me the check results IDEA StatiCa
 > reports.
 
+Before the first run, Claude asks whether you want to watch the changes in IDEA StatiCa
+Connection. Either answer works for tests 2 to 6; test 7 checks the live view.
+
 Claude writes and runs a script, the project file appears, and Claude lists the check results
 (analysis, plates, bolts, welds) as IDEA StatiCa's results. In our runs, every check passed.
 
@@ -78,6 +81,29 @@ results equal the ones Claude reported in test 4.
 
 The exact numbers depend on the model Claude builds from the prompt. Test 6 is what matters:
 Claude passes on IDEA StatiCa's numbers, so the desktop application shows the same ones.
+
+### 7. The live view
+
+The live view needs Python; if the Python package `grpcio` is missing, Claude installs it once
+you confirm the command. Close every IDEA StatiCa Connection window and start a new Claude Code session. If you chose
+to remember an answer in test 2, first ask Claude to *"ask me about the live view again"*.
+
+> Open C:\Temp\ideastatica-test\end-plate-final.ideaCon, make the end plate 12 mm thick, let
+> IDEA StatiCa recalculate it and save it as C:\Temp\ideastatica-test\end-plate-12mm.ideaCon.
+
+Claude asks whether you want to watch the changes in IDEA StatiCa Connection. Choose **Yes,
+side by side**. A Connection window opens on the right part of the screen, and after the run
+it shows the model with the 12 mm plate.
+
+In the Connection window, change the end plate thickness to 15 mm without saving it, then ask
+Claude to *"let IDEA StatiCa recalculate it and save it as end-plate-15mm.ideaCon"*. Claude
+says that it continues from the state in the window, and `end-plate-15mm.ideaCon` holds the
+15 mm plate you set there.
+
+Now close the Connection window and ask for a 14 mm plate, saved as `end-plate-14mm.ideaCon`.
+Claude saves the file, says once that the Connection window is closed, and does not open it
+again. When you then ask Claude to *"show it in Connection"*, the window opens with the 14 mm
+plate.
 
 ## What to watch along the way
 

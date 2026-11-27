@@ -156,6 +156,26 @@ already running for that project. What a cancel leaves in each connection and ho
 long/multi-connection runs — it shows progress, can be cancelled and holds no request open; the
 synchronous path stays correct for a single quick check.
 
+## Live view in the desktop application (optional)
+
+The user can watch the model in an IDEA StatiCa Connection window that updates after each of
+your runs. It applies only when you run commands on the user's Windows computer and the model is
+what the user will look at: you build or change a project for them now. It does not apply when
+the script is the product (a script to run later, batch reports, reading results). When it
+applies, run `python "<this skill's folder>/scripts/live_view.py" status` before the first run
+that changes the model. When its `"window"` is not `"open"`, follow the remembered `"mode"`:
+
+- `ask`: ask once per conversation whether to open it, side by side or in its own window, and
+  whether to remember the answer;
+- `always`: `start --auto` without asking;
+- `never`: do not offer it.
+
+While the live view is on, run `live_view.py check` before the first change of every request: it
+takes over what the user did in the window meanwhile. After every run that changed the model,
+save the `.ideaCon` and `show` it. **`show` never opens a window. When the user has closed it (exit 3), say so once and do not
+start it again until they ask.** The question, the user's later requests, the commands, the exit
+codes and what happens to edits made in the window: `reference/live-view.md`.
+
 ## Iron rules (violating any of these is the top cause of failures)
 
 1. **`ClientId` header on every request** (except connect-client and
@@ -282,6 +302,15 @@ Desktop-authored composite assemblies (a base-plate or end-plate assembly, …) 
 to typed GETs and read-only — compose equivalents from primitives instead. DTO tables,
 shared building blocks and wire gotchas: `reference/operations.md`.
 
+**After you open an existing project, and before you change its operations,** run
+`python "<this skill's folder>/scripts/check_operations.py" --client-id <ClientId> --project-id
+<projectId>` (or pass the `.ideaCon` path instead of the two ids). It lists the operations that
+`GET .../operations` returns and no typed GET does. When `readOnlyCount` is above 0, tell the
+user once, in your own words from its `message`, which operations the API can only read, and
+offer the ways forward: design parameters, if the project defines some for them; the same design
+rebuilt from basic operations, which replaces the composite operation; or a change in the desktop
+application. Never PUT or POST at their ids (409).
+
 ## Reference routing
 
 Keyed on the question you actually have, not on how the docs are organized.
@@ -310,6 +339,8 @@ Keyed on the question you actually have, not on how the docs are organized.
 | **I want a parameter to drive a property** — create a parameter, find what is drivable, link it, change the model from one value; and the links that answer 200 and do nothing | `reference/parameters.md` (the per-`valueType` applies/refuses grid stays in `reference/field-matrix.md` § parameters) |
 | **I need a cross-section** — its outline as arcs and lines, replacing a library section in place, or authoring one from dimensions (the 26 parametric shapes, the four dimension `$type`s) | `reference/cross-sections.md` |
 | common enums (CountryCode, analysis types) | `reference/schemas.md` |
+| **the user wants to watch the model in the desktop application** while you work, closed that window, or changed the model in it | `reference/live-view.md` (helper `scripts/live_view.py`) |
+| **which operations of an opened project the API cannot change** (composites made in the desktop application) | `scripts/check_operations.py` (§ Typed operations — wire contract) |
 
 ## Frequently-needed shapes (stable API)
 

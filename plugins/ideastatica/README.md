@@ -61,8 +61,8 @@ When the agent builds or changes a model on your computer, it offers once to sho
 in an IDEA StatiCa Connection window, side by side with the window you work in or on its own,
 and can remember your answer. If you close that window, the agent does not open it again until
 you ask. The window reopens a preview copy of each saved version, so saving in it never changes
-your project file. When you change the model in the window, the agent notices it with your next
-request and asks whether to continue from your changes.
+your project file. When you change the model in the window, the agent continues from your
+changes with your next request and tells you so.
 
 Composite operations created in the desktop application, such as an end plate or base plate
 assembly, are read-only through the API. Change them through design parameters, or have the

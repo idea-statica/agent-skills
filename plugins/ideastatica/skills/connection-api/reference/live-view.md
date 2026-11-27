@@ -82,7 +82,8 @@ the answer. Ask both questions together:
 | the user says, for example | command |
 |---|---|
 | "show it in Connection", "open the live view" | `start`, then `show` the latest file |
-| "I changed it in Connection, continue from there" | `check --adopt`, then § Edits made in the window |
+| "I changed it in Connection, continue from there" | `check`, then § Edits made in the window |
+| "drop my changes in the window" | open `previousVersion` from the last `check` (§ Edits made in the window) |
 | "always open the live view" | `remember always`, and `start` if the window is not open |
 | "don't offer the live view any more" | `remember never` (the open window stays; close it with `stop` only if they also ask) |
 | "ask me about the live view again" | `remember ask` |
@@ -91,25 +92,32 @@ the answer. Ask both questions together:
 
 ## Edits made in the window
 
-The user may change the model in the window between two requests. While the live view is on, run
-`live_view.py check` before the first change of every request, so you never build on data the
-user has replaced:
+The user may change the model in the window between two requests, or only recalculate it there;
+the application reports both the same way. While the live view is on, run `live_view.py check`
+before the first change of every request, so you never build on data the user has replaced:
 
 | exit | meaning | what you do |
 |---|---|---|
-| 0 | no edits in the window | carry on |
-| 4 | the user edited the model in the window, saved or not | ask: *"You changed the model in the Connection window. Shall I continue from your changes, or replace them with mine?"* |
-| 3 | the user closed the window without saving edits | carry on, nothing to take over |
+| 0 | nothing happened in the window | carry on |
+| 7 | the window had changes, and `check` took its state over | follow the steps below |
+| 3 | the user closed the window without saving anything in it | carry on |
 | 5 | the live view is not on | carry on |
 
-**Continue from their changes:**
-1. `live_view.py check --adopt`. It saves unsaved edits in the window into the preview copy and prints the path of that copy.
-2. Open that copy in the service (`POST /api/5/projects/open`) and close the project you had open.
+After exit 7, `check` prints `tookOver`, the window's state saved into the preview copy, and
+`previousVersion`, a copy of the file you showed last.
+1. Tell the user in one line: *"I am continuing from the state in the Connection window (your
+   changes or a recalculation there)."*
+2. Open `tookOver` in the service (`POST /api/5/projects/open`) and close the project you had open.
 3. Read the model again, because ids can change.
-4. Run `check_operations.py` on the opened project. Edits in the desktop application can create composite operations that the API cannot change (§ Typed operations in `SKILL.md`).
+4. Run `check_operations.py` on the opened project. Edits in the desktop application can create
+   composite operations that the API cannot change (§ Typed operations in `SKILL.md`).
 5. Make the user's change, save it to their output file and `show` it.
 
-**Replace them:** make your change as usual, and when `show` stops with exit 4, run `show --replace-edited`.
+Results calculated in the window do not come along: the API reports only results of its own
+`calculate`, so when the user asks for numbers, let IDEA StatiCa calculate through the API.
+
+When the user says to drop what they did in the window, open `previousVersion` in the service
+instead, and replace the window at the next `show` with `--replace-edited`.
 
 ## Running it
 
@@ -138,7 +146,7 @@ python "<skill folder>/scripts/live_view.py" show "C:\path\to\model.ideaCon"
 |---|---|---|
 | 0 | shown | nothing to say |
 | 3 | the user closed the window | say once: *"The Connection window is closed, so I am no longer updating it. Say "show it in Connection" when you want it back."* Do not run `start` again until the user asks. Do not change the remembered choice: closing the window is not "never" |
-| 4 | the window holds edits that the update would replace: not saved yet, or saved into the preview copy | ask, as in § Edits made in the window. Continue: `check --adopt` and the steps there, then repeat your change on top of their edits. Replace: `show --replace-edited` |
+| 4 | the window holds changes that the update would replace (you skipped `check`) | run `check`, follow § Edits made in the window and repeat your change on top of the window's state. `show --replace-edited` only when the user said to drop their window changes |
 | 5 | the live view is not on | say nothing; it was never started, the user stopped it, or it is still starting (`start` first) |
 | 6 | sent, but the window did not confirm the open | usually it opened anyway; a dialog may wait in the window. Mention it only if the user says the window did not change |
 | 1 | error | report the message; the live view is optional, so carry on with the API work |
@@ -157,8 +165,9 @@ python "<skill folder>/scripts/live_view.py" show "C:\path\to\model.ideaCon"
 | `stop` fails | the window does not answer yet; `start` (it takes the window over), then `stop` |
 
 The helper keeps the remembered choice, the window it started (process id, port, executable,
-the shown file) and the preview copies in `%LOCALAPPDATA%\IDEA StatiCa agent skills`. Deleting
-the folder brings the question back.
+the shown file) and the preview copies in `%LOCALAPPDATA%\IDEA StatiCa agent skills`. Next to a
+preview copy, the desktop application keeps its own `.backup` and `.Archiv` files when it saves.
+Deleting the folder while no live view window is open brings the question back.
 
 ## How it works
 

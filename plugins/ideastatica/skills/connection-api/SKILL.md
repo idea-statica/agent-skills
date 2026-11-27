@@ -170,8 +170,9 @@ that changes the model. When its `"window"` is not `"open"`, follow the remember
 - `always`: `start --auto` without asking;
 - `never`: do not offer it.
 
-While the live view is on, after every run that changed the model, save the `.ideaCon` and `show`
-it. **`show` never opens a window. When the user has closed it (exit 3), say so once and do not
+While the live view is on, run `live_view.py check` before the first change of every request: it
+takes over what the user did in the window meanwhile. After every run that changed the model,
+save the `.ideaCon` and `show` it. **`show` never opens a window. When the user has closed it (exit 3), say so once and do not
 start it again until they ask.** The question, the user's later requests, the commands, the exit
 codes and what happens to edits made in the window: `reference/live-view.md`.
 

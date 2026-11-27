@@ -163,9 +163,11 @@ window reopens the saved file, which takes a few seconds.
   live view again"*.
 - If you close the window, Claude stops updating it and opens it again only when you ask, for
   example *"show it in Connection"*.
-- You can change the model in the window too. With your next request, Claude notices the
-  change and asks whether to continue from it. The window shows a preview copy, so saving in it
-  never changes your project file, and Claude never replaces your edits without asking.
+- You can change the model in the window too. With your next request, Claude continues from
+  the state in the window and tells you so; say so if you want your changes there dropped
+  instead. Results calculated in the window do not carry over: for numbers, Claude has IDEA
+  StatiCa calculate through the API. The window shows a preview copy, so saving in it never
+  changes your project file.
 - In that window, File > Open and New are disabled. Like any Connection window, it uses your
   license while it is open. The live view needs Python with the package `grpcio`
   (`pip install grpcio`).

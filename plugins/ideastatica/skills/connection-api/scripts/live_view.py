@@ -8,7 +8,7 @@ The agent runs this helper; the user does not need to. Windows only, Python 3.8 
     python live_view.py remember ask|always|never [--layout side-by-side|window]
     python live_view.py start [--auto] [--service URL] [--install DIR] [--layout side-by-side|window]
     python live_view.py show FILE.ideaCon [--replace-edited]
-    python live_view.py check [--adopt]
+    python live_view.py check
     python live_view.py arrange
     python live_view.py stop
 
@@ -16,14 +16,14 @@ The agent runs this helper; the user does not need to. Windows only, Python 3.8 
 running Connection REST API service. With --auto (the remembered "always" choice) it refuses to
 reopen a window the user closed while the same agent session runs. `show` copies a saved .ideaCon
 to a preview copy and opens that copy in the window, so saving in the window never writes to the
-agent's file. `show` never starts a window. `check` tells, before the next change, whether the
-user edited the model in the window; `check --adopt` saves those edits into the preview copy and
-names the file to open in the service.
+agent's file. `show` never starts a window. Before the next change, `check` takes over what the
+user did in the window (edits, or a recalculation, which the application reports as an edit too):
+it saves the window's state into the preview copy and names the file to open in the service.
 
 Exit codes: 0 done; 1 error; 2 bad arguments; 3 the user closed the window; 4 the user edited the
 model in the window (unsaved, or saved into the preview copy) and nothing was replaced; 5 the live
 view is not on (never started, stopped, or still starting); 6 the file was sent but the window did
-not confirm the open.
+not confirm the open; 7 (check) the window's state was taken over: open the file it names.
 
 How it works: `IdeaConnection.exe -cmd:automation-<id> -grpcPort:<port> user-mode 0` makes the
 application a gRPC server on localhost (contract: IdeaStatiCa.Plugin in
@@ -54,7 +54,7 @@ from ctypes import wintypes
 from datetime import datetime, timedelta
 from pathlib import Path
 
-EXIT_ERROR, EXIT_ARGS, EXIT_CLOSED, EXIT_EDITED, EXIT_OFF, EXIT_UNCONFIRMED = 1, 2, 3, 4, 5, 6
+EXIT_ERROR, EXIT_ARGS, EXIT_CLOSED, EXIT_EDITED, EXIT_OFF, EXIT_UNCONFIRMED, EXIT_TOOK_OVER = 1, 2, 3, 4, 5, 6, 7
 
 SERVICE_EXE = "IdeaStatiCa.ConnectionRestApi.exe"
 DESKTOP_EXE = "IdeaConnection.exe"
@@ -784,12 +784,12 @@ def cmd_show(a) -> int:
     if not a.replace_edited:
         if invoke(port, "GetIsEdited", timeout=30):
             raise LiveViewError("The Connection window holds edits the user has not saved. Nothing was replaced. "
-                                "Ask the user: save them in the window (they go to the preview copy) and continue "
-                                "from them, or let the update replace them (show --replace-edited).", EXIT_EDITED)
+                                "Run check to take them over, then repeat your change on "
+                                "top of them; replace them (show --replace-edited) only if the user said so.", EXIT_EDITED)
         if _preview_changed(shown):
             raise LiveViewError(f"The user saved edits in the Connection window to the preview copy {shown['preview']}. "
-                                f"Nothing was replaced. Ask the user: continue from their edits (open that copy in "
-                                f"the service before the next change), or replace them (show --replace-edited).",
+                                f"Nothing was replaced. Run check to take them over, then repeat your change on top of "
+                                f"them; replace them (show --replace-edited) only if the user said so.",
                                 EXIT_EDITED)
     PREVIEW_DIR.mkdir(parents=True, exist_ok=True)
     preview = PREVIEW_DIR / source.name
@@ -820,8 +820,12 @@ def cmd_show(a) -> int:
                         EXIT_UNCONFIRMED)
 
 
-def cmd_check(a) -> int:
-    """Before the next change: did the user edit the model in the window? With --adopt, take the edits over."""
+def cmd_check(_a) -> int:
+    """Before the next change: take over whatever the user did in the window since the last update.
+
+    The application reports a plain recalculation as an edit too, and taking the window's state over is
+    right in both cases (the model is unchanged after a recalculation), so this never asks. The agent's
+    previous version is kept next to the preview copy, in case the user wants their window edits dropped."""
     state = load_state()
     window = state["window"]
     status = window_status(window)
@@ -835,18 +839,13 @@ def cmd_check(a) -> int:
     saved = _preview_changed(shown)
     if not unsaved and not saved:
         if status != "open":
-            raise LiveViewError("The user closed the Connection window, without saving edits in it.", EXIT_CLOSED)
-        print("No edits in the Connection window since the last update.")
+            raise LiveViewError("The user closed the Connection window without saving anything in it.", EXIT_CLOSED)
+        print("Nothing changed in the Connection window since the last update.")
         return 0
     if not shown:
-        raise LiveViewError("The window holds edits, but it shows no file from this helper, so there is nothing to "
-                            "take over. Ask the user to save their work in the window under a name of their own.")
-    what = "edits they have not saved yet" if unsaved else "edits they saved there"
-    if not a.adopt:
-        raise LiveViewError(f"The user changed the model in the Connection window ({what}). Ask whether to continue "
-                            f"from these edits or to replace them with your next update. To continue: check --adopt.",
-                            EXIT_EDITED)
-    preview = Path(shown["preview"])
+        raise LiveViewError("The window holds changes, but it shows no file from this helper, so there is nothing "
+                            "to take over. Ask the user to save their work in the window under a name of their own.")
+    preview, source = Path(shown["preview"]), Path(shown["source"])
     if unsaved:
         before = preview.stat().st_mtime_ns
         invoke(window["port"], "SaveCurrentItemAsync", timeout=120)
@@ -854,11 +853,18 @@ def cmd_check(a) -> int:
         while time.time() < deadline and preview.stat().st_mtime_ns == before:
             time.sleep(0.5)
         if preview.stat().st_mtime_ns == before:
-            raise LiveViewError("The window did not save the edits; a dialog may be waiting in it.")
-    _record_shown(state, Path(shown["source"]), preview)  # the edits are now the agreed state
-    print(f"Took over the user's edits. Before your next change, open this file in the service "
-          f"(POST /api/5/projects/open), close the project you had open, and read the model again:\n{preview}")
-    return 0
+            raise LiveViewError("The window did not save its changes; a dialog may be waiting in it.")
+    backup = preview.with_name(preview.stem + ".before-window" + preview.suffix)
+    if source.is_file() and source.resolve() != preview.resolve():
+        shutil.copyfile(source, backup)  # the agent's last version, for "drop my window edits"
+    else:
+        backup = None
+    _record_shown(state, source, preview)  # the window's state is now the agreed state
+    print(json.dumps({"tookOver": str(preview), "previousVersion": str(backup) if backup else None,
+                      "note": "Open tookOver in the service (POST /api/5/projects/open), close the project you had "
+                              "open and read the model again. Results calculated in the window do not come along: "
+                              "numbers come only from your own calculate."}, indent=2, ensure_ascii=False))
+    return EXIT_TOOK_OVER
 
 
 def cmd_arrange(_a) -> int:
@@ -920,10 +926,7 @@ def main() -> int:
                       help="replace edits in the window; only after the user agreed")
     show.add_argument("--timeout", type=float, default=100.0)
     show.set_defaults(func=cmd_show)
-    check = sub.add_parser("check")
-    check.add_argument("--adopt", action="store_true",
-                       help="take the user's edits over: save them in the window and name the file to open")
-    check.set_defaults(func=cmd_check)
+    sub.add_parser("check").set_defaults(func=cmd_check)
     sub.add_parser("arrange").set_defaults(func=cmd_arrange)
     sub.add_parser("stop").set_defaults(func=cmd_stop)
     a = parser.parse_args()

@@ -157,12 +157,15 @@ side by side with the window you work in, taking the right 60 % of the screen, o
 Claude does not click in that window: it changes the model through the API, saves it, and the
 window reopens the saved file, which takes a few seconds.
 
-- Claude can remember your answer and stop asking. Say *"start the live view"* or *"stop the
-  live view"* to change it.
-- If you close the window, Claude stops updating it and opens it again only when you ask.
-- Edits you make in the window stay in the window. To have Claude continue from them, save them
-  and tell Claude. Before an update would replace edits you have not saved, Claude asks.
-- In that window, File > Open and New are disabled. It needs the Python package `grpcio`
+- Claude can remember your answer and stop asking. To change it later, say for example
+  *"always open the live view"*, *"don't offer the live view any more"* or *"ask me about the
+  live view again"*.
+- If you close the window, Claude stops updating it and opens it again only when you ask, for
+  example *"show it in Connection"*.
+- The window shows a preview copy, so saving in it never changes your project file. Before an
+  update would replace edits you made in the window, Claude asks whether to continue from them.
+- In that window, File > Open and New are disabled. Like any Connection window, it uses your
+  license while it is open. The live view needs Python with the package `grpcio`
   (`pip install grpcio`).
 
 ## How updates reach you
@@ -190,9 +193,11 @@ window reopens the saved file, which takes a few seconds.
 The plugin itself sends nothing anywhere. It contains instructions, reference pages, example
 code and one helper script, with no hooks, no MCP servers and no programs that run on their
 own. Its example code talks only to the IDEA StatiCa service on your own computer. The live view
-helper runs only when Claude starts it, talks only to the Connection application on your
-computer and stores your answer to the live view question in
-`%LOCALAPPDATA%\IDEA StatiCa agent skills`. What Claude reads while it works, such as your
+helper runs only when Claude starts it. It asks the service on your computer for its version,
+starts and talks to the Connection application there, reads that application's log files and
+keeps your answer to the live view question, the window it started and the preview copies in
+`%LOCALAPPDATA%\IDEA StatiCa agent skills`. The Connection window it starts stays open until
+you close it. What Claude reads while it works, such as your
 requests, model data and script output, is part of your Claude conversation and is handled
 under the terms of your Claude plan.
 

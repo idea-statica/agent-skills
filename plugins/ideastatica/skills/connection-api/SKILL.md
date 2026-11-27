@@ -158,20 +158,22 @@ synchronous path stays correct for a single quick check.
 
 ## Live view in the desktop application (optional)
 
-When a request builds or changes a model and you run commands on the user's Windows computer,
-the user can watch the model in an IDEA StatiCa Connection window that updates after each of
-your runs. Before the first run that changes the model, run `python scripts/live_view.py
-status`. When its `"window"` is not `"open"`, follow the remembered `"mode"`:
+The user can watch the model in an IDEA StatiCa Connection window that updates after each of
+your runs. It applies only when you run commands on the user's Windows computer and the model is
+what the user will look at: you build or change a project for them now. It does not apply when
+the script is the product (a script to run later, batch reports, reading results). When it
+applies, run `python "<this skill's folder>/scripts/live_view.py" status` before the first run
+that changes the model. When its `"window"` is not `"open"`, follow the remembered `"mode"`:
 
 - `ask`: ask once per conversation whether to open it, side by side or in its own window, and
   whether to remember the answer;
-- `always`: `start` it without asking;
+- `always`: `start --auto` without asking;
 - `never`: do not offer it.
 
-After every run that changed the model, save the `.ideaCon` and `show` it. **`show` never opens a
-window. When the user has closed it (exit 3), say so once and do not start it again until they
-ask.** The question, the commands, the exit codes and what happens to edits made in the window
-are in `reference/live-view.md`.
+While the live view is on, after every run that changed the model, save the `.ideaCon` and `show`
+it. **`show` never opens a window. When the user has closed it (exit 3), say so once and do not
+start it again until they ask.** The question, the user's later requests, the commands, the exit
+codes and what happens to edits made in the window: `reference/live-view.md`.
 
 ## Iron rules (violating any of these is the top cause of failures)
 

@@ -9,10 +9,11 @@ what each part of the version means here.
 - `connection-api`: live view in the IDEA StatiCa Connection desktop application. When the
   agent builds or changes a model on the user's Windows computer, it asks once whether the user
   wants to watch the changes in a Connection window, side by side with the window they work in
-  or on its own, and whether to remember the answer. The window reopens each saved version of
-  the model. When the user closes it, the agent does not open it again until asked, and it does
-  not replace edits the user has not saved without asking. New helper `scripts/live_view.py`
-  and reference page `reference/live-view.md`.
+  or on its own, and whether to remember the answer. The window reopens a preview copy of each
+  saved version of the model, so saving in the window never changes the project file. When the
+  user closes the window, the agent does not open it again until asked, also with the answer
+  remembered, and it does not replace edits made in the window without asking. New helper
+  `scripts/live_view.py` and reference page `reference/live-view.md`.
 
 ## 1.0.1 - 2026-11-24
 

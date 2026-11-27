@@ -84,7 +84,8 @@ Claude passes on IDEA StatiCa's numbers, so the desktop application shows the sa
 
 ### 7. The live view
 
-Close every IDEA StatiCa Connection window and start a new Claude Code session. If you chose
+The live view needs Python with the package `grpcio`; if it is missing, Claude asks to install
+it. Close every IDEA StatiCa Connection window and start a new Claude Code session. If you chose
 to remember an answer in test 2, first ask Claude to *"ask me about the live view again"*.
 
 > Open C:\Temp\ideastatica-test\end-plate-final.ideaCon, make the end plate 12 mm thick, let

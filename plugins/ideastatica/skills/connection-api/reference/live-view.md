@@ -77,6 +77,12 @@ the answer. Ask both questions together:
 | a plain "yes" in text | side by side, not remembered |
 | anything else | ask once more what they want |
 
+**Before the first `start`:** when `status` reports `"grpcio": false`, say in one line that the
+live view needs the Python package grpcio, then run `python -m pip install grpcio` with the same
+Python that runs the helper. Your agent's confirmation prompt for that command is the user's
+consent; do not ask a second time in text. If the installation fails, say so and carry on
+without the live view.
+
 ## What the user may say later
 
 | the user says, for example | command |
@@ -158,7 +164,7 @@ python "<skill folder>/scripts/live_view.py" show "C:\path\to\model.ideaCon"
 
 | what you see | cause and fix |
 |---|---|
-| `The live view needs the Python package grpcio` | ask the user, then `pip install grpcio` for the Python that runs the helper; `status` reports `"grpcio"` |
+| `The live view needs the Python package grpcio` | `python -m pip install grpcio` with the Python that runs the helper, as in § The question; `status` reports `"grpcio"` |
 | `start`: no installation has the service's version | the service runs from a folder outside `C:\Program Files\IDEA StatiCa`; `start --install "<that folder>"` |
 | `start`: still starting after 100 s | a license or first-run dialog waits in the Connection window; the user answers it, then `start` again |
 | `start`: `IdeaConnection.exe exited during start-up` | the installation is damaged or the license is refused; ask the user to open Connection from the Start menu once and read its message |

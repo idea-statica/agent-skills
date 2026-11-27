@@ -169,8 +169,8 @@ window reopens the saved file, which takes a few seconds.
   StatiCa calculate through the API. The window shows a preview copy, so saving in it never
   changes your project file.
 - In that window, File > Open and New are disabled. Like any Connection window, it uses your
-  license while it is open. The live view needs Python with the package `grpcio`
-  (`pip install grpcio`).
+  license while it is open. The live view needs Python; the first time, Claude installs the
+  Python package `grpcio` once you confirm the command.
 
 ## How updates reach you
 

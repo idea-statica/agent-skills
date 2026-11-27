@@ -88,6 +88,7 @@ What is inside `skills/connection-api/`:
 
 | Plugin version | Skill | IDEA StatiCa | Service build checked | API |
 |---|---|---|---|---|
+| 1.1.1 | `connection-api` | 26.1 | 26.1.1.2809 | `/api/5` |
 | 1.1.0 | `connection-api` | 26.1 | 26.1.1.2809 | `/api/5` |
 | 1.0.1 | `connection-api` | 26.1 | 26.1.1.2809 | `/api/5` |
 | 1.0.0 | `connection-api` | 26.1 | 26.1.1.2809 | `/api/5` |

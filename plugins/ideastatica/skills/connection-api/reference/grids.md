@@ -328,13 +328,27 @@ model uses.
   how the plate was built, not on where the member points. **Derive it, do not carry a value
   over from another model**: build the grid, take the block's `AxisZ` from `export-iom` and dot
   it with the member's `axisX`; the block must point AWAY from the steel, and if it does not,
-  send the other side.
+  send the other side. **Do this check right after the grid is added, before the first
+  `calculate`.**
+
+  For the common case, a base plate placed with `memberLcs` across the end of a column (as in
+  `examples/typed_operations.py`), the plate normal runs along the column's local x and
+  `upperSide` is the face the normal points to. The block goes on the face away from the column
+  body:
+
+  | the column | its body lies on | `plateSide` of the block |
+  |---|---|---|
+  | starts at the node (`connectedBy: "begin"`), local x pointing into the column | +x | `lowerSide` |
+  | ends at the node (`connectedBy: "end"`), local x pointing away from the column | −x | `upperSide` |
+
+  Treat the table as the first guess and the `AxisZ` check as the proof.
 
   Getting it wrong is silent in every channel the API offers — the add succeeds, the scene and
-  IOM counts are right, and `Analysis` still reads `100 %`. The one hint is the **`Concrete
+  IOM counts are right, and `Analysis` may still read `100 %`. The hints are the **`Concrete
   block` row coming back `Not calculated`**, which reads like "not applicable" rather than
-  "geometry is wrong" — and it is not exclusive to this mistake, so use the direction check as
-  the actual test.
+  "geometry is wrong", or, under a bending moment, anchors far above 100 % and an analysis that
+  stops early. Neither is exclusive to this mistake, so use the direction check as the actual
+  test.
 - **Foundation block — everything sits inside `foundationBlock`.** The service's messages and the
   desktop also call it the *concrete block*, IOM `ConcreteBlockData`; it is one object. An anchor grid requires it
   (omitted or `null` → 400 naming `foundationBlock`). A new block is `foundationBlock` with

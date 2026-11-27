@@ -1,7 +1,7 @@
 {
   "name": "ideastatica",
   "displayName": "IDEA StatiCa",
-  "version": "1.1.0",
+  "version": "1.1.1",
   "description": "Skills that teach AI agents to automate IDEA StatiCa products through their APIs. Includes connection-api: write and debug code that drives the IDEA StatiCa Connection REST API over HTTP, from steel connection modelling and CBFEM calculation to results, reports and design parameters.",
   "author": {
     "name": "IDEA StatiCa",

@@ -4,6 +4,13 @@ All notable changes to the `ideastatica` plugin. Versions follow
 [Semantic Versioning](https://semver.org/); see `MAINTAINING.md` at the repository root for
 what each part of the version means here.
 
+## 1.1.1 - 2026-11-27
+
+- `connection-api`: on which face of a column base plate the concrete block goes. A column that
+  starts at the node takes `lowerSide`, one that ends at the node takes `upperSide`. The skill
+  now has the agent check the block's direction right after adding the grid, before the first
+  calculation, instead of finding a wrong side from the results.
+
 ## 1.1.0 - 2026-11-27
 
 - `connection-api`: live view in the IDEA StatiCa Connection desktop application. When the

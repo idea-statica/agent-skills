@@ -189,8 +189,10 @@ def build(api, project, conn):
         "cutBy": {"kind": "negativeVolumeMember", "operationId": vent},
         "cuttingMethod": "surface"})
 
-    # The base plate bears on a new concrete block below it (plateSide lowerSide); the anchors
-    # then go into that same block. The block kind and the reference to an existing block sit
+    # The base plate bears on a new concrete block below it. plateSide is lowerSide because COL
+    # starts at the node with local x pointing up into the column: the plate normal points into
+    # the column, so the block goes on the lower face (a column that ENDS at the node, local x
+    # pointing down, takes upperSide; reference/grids.md). The anchors then go into that block. The block kind and the reference to an existing block sit
     # inside foundationBlock.
     contact_grid = op("POST", "contact-grid", {
         "name": "CONTACT",
